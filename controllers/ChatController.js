@@ -12,3 +12,16 @@ exports.createChatMessage = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+exports.getAllMessages = async (req, res) => {
+  try {
+    const allMsgs = await ChatService.getAllMessages();
+    res.status(201).json({
+      messages: allMsgs,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};
