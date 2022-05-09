@@ -25,3 +25,17 @@ exports.getAllMessages = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+exports.getNewMessages = async (req, res) => {
+  try {
+    const lastMsgId = req.query.lastMessageId || -1;
+    const newMsgs = await ChatService.getNewMessages(lastMsgId);
+    res.status(201).json({
+      messages: newMsgs,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};
