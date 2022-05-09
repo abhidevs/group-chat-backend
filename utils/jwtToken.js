@@ -5,5 +5,10 @@ exports.generateAccessToken = (user) => {
 };
 
 exports.verifyToken = (token) => {
-  return jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => ({ err, user }));
+  return new Promise((resolve, reject) => {
+    return jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+      if (err) reject(err);
+      else resolve(user);
+    });
+  });
 };

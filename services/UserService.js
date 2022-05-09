@@ -20,3 +20,7 @@ exports.checkIfUserExists = async ({ email, phone }) => {
     throw error;
   }
 };
+
+exports.findUserById = async (id) => {
+  return await User.findByPk(id);
+};
