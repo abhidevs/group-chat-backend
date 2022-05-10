@@ -1,8 +1,8 @@
 const ChatService = require("../services/ChatService");
 
-exports.createChatMessage = async (req, res) => {
+exports.createMessage = async (req, res) => {
   try {
-    await ChatService.createChatMessage(req);
+    await ChatService.createMessage(req);
     res.status(201).json({
       message: "Message saved succesfully",
       success: true,
@@ -16,7 +16,7 @@ exports.createChatMessage = async (req, res) => {
 exports.getAllMessages = async (req, res) => {
   try {
     const allMsgs = await ChatService.getAllMessages();
-    res.status(201).json({
+    res.status(200).json({
       messages: allMsgs,
       success: true,
     });
@@ -30,7 +30,7 @@ exports.getNewMessages = async (req, res) => {
   try {
     const lastMsgId = req.query.lastMessageId || -1;
     const newMsgs = await ChatService.getNewMessages(lastMsgId);
-    res.status(201).json({
+    return res.status(200).json({
       messages: newMsgs,
       success: true,
     });

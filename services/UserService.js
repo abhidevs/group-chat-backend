@@ -24,3 +24,11 @@ exports.checkIfUserExists = async ({ email, phone }) => {
 exports.findUserById = async (id) => {
   return await User.findByPk(id);
 };
+
+exports.getAllUsers = async () => {
+  try {
+    return await User.findAll({ attributes: ["id", "name", "email"] });
+  } catch (error) {
+    throw error;
+  }
+};

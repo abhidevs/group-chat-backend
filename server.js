@@ -8,8 +8,13 @@ dotenv.config();
 const sequelize = require("./utils/db");
 const AuthRoutes = require("./routes/AuthRoutes");
 const ChatRoutes = require("./routes/ChatRoutes");
+const ChatRoomRoutes = require("./routes/ChatRoomRoutes");
+const UserRoutes = require("./routes/UserRoutes");
 const User = require("./models/User");
-const ChatMessage = require("./models/ChatMessage");
+const Message = require("./models/Message");
+const Room = require("./models/Room");
+const Participant = require("./models/Participant");
+const Invite = require("./models/Invite");
 
 const app = express();
 
@@ -20,9 +25,19 @@ app.use(bodyParser.json());
 app.get("/api", (req, res) => res.send("Welcome to Expense Tracker API"));
 app.use("/api/auth", AuthRoutes);
 app.use("/api/chat", ChatRoutes);
+app.use("/api/rooms", ChatRoomRoutes);
+app.use("/api/users", UserRoutes);
 
-User.hasMany(ChatMessage);
-ChatMessage.belongsTo(User);
+User.hasMany(Message);
+Message.belongsTo(User);
+Room.hasMany(Message);
+Message.belongsTo(Room);
+User.belongsToMany(Room, { through: Participant });
+Room.belongsToMany(User, { through: Participant });
+Room.hasMany(Invite);
+Invite.belongsTo(Room);
+Invite.belongsTo(User, { foreignKey: "senderId" });
+Invite.belongsTo(User, { foreignKey: "receiverId" });
 
 const port = 3000;
 sequelize

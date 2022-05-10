@@ -1,10 +1,10 @@
 const { Op } = require("sequelize");
-const ChatMessage = require("../models/ChatMessage");
+const Message = require("../models/Message");
 const User = require("../models/User");
 
-exports.createChatMessage = async ({ body: { message }, user }) => {
+exports.createMessage = async ({ body: { message, roomId }, user }) => {
   try {
-    const msg = await user.createChatMessage({ message });
+    const msg = await user.createMessage({ message, roomId });
     await msg.save();
     return msg;
   } catch (error) {
@@ -14,7 +14,7 @@ exports.createChatMessage = async ({ body: { message }, user }) => {
 
 exports.getAllMessages = async () => {
   try {
-    return await ChatMessage.findAll({
+    return await Message.findAll({
       include: [
         { model: User, as: "user", attributes: ["id", "name", "email"] },
       ],
@@ -26,7 +26,7 @@ exports.getAllMessages = async () => {
 
 exports.getNewMessages = async (lastMsgId) => {
   try {
-    return await ChatMessage.findAll({
+    return await Message.findAll({
       where: { id: { [Op.gt]: lastMsgId } },
       include: [
         { model: User, as: "user", attributes: ["id", "name", "email"] },
