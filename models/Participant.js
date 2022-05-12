@@ -9,6 +9,7 @@ const Participant = sequelize.define("participant", {
     allowNull: false,
     primaryKey: true,
   },
+  isAdmin: { type: DataTypes.BOOLEAN, defaultValue: false },
 });
 
 module.exports = Participant;

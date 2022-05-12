@@ -25,9 +25,29 @@ exports.findUserById = async (id) => {
   return await User.findByPk(id);
 };
 
-exports.getAllUsers = async () => {
+exports.searchUsers = async ({ query: { name, email, phone } }) => {
   try {
-    return await User.findAll({ attributes: ["id", "name", "email"] });
+    if (name) {
+      console.log(name);
+      return await User.findAll({
+        where: {
+          name: {
+            [Op.like]: `${name}%`,
+          },
+        },
+        attributes: ["id", "name", "email"],
+      });
+    } else if (email) {
+      return await User.findAll({
+        where: { email },
+        attributes: ["id", "name", "email"],
+      });
+    } else {
+      return await User.findAll({
+        where: { phone },
+        attributes: ["id", "name", "email"],
+      });
+    }
   } catch (error) {
     throw error;
   }

@@ -7,8 +7,14 @@ const router = express.Router();
 
 router.post("/create", authenticateToken, ChatRoomController.createChatRoom);
 
-router.get("/all", authenticateToken, ChatRoomController.getAllChatRooms);
+router.get("/all", authenticateToken, ChatRoomController.getMyChatRooms);
 
-router.post("/add-participants", authenticateToken, ChatRoomController.addParticipantsToRoom);
+router.get("/participants", authenticateToken, ChatRoomController.getParticipantsByRoom);
+
+router.post("/participants", authenticateToken, ChatRoomController.addParticipantsToRoom);
+
+router.delete("/participants", authenticateToken, ChatRoomController.removeParticipantFromRoom);
+
+router.post("/add-admin", authenticateToken, ChatRoomController.addAdmin);
 
 module.exports = router;

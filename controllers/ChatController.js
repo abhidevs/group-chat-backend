@@ -29,7 +29,7 @@ exports.getAllMessages = async (req, res) => {
 exports.getNewMessages = async (req, res) => {
   try {
     const lastMsgId = req.query.lastMessageId || -1;
-    const newMsgs = await ChatService.getNewMessages(lastMsgId);
+    const newMsgs = await ChatService.getNewMessages(req.user, lastMsgId);
     return res.status(200).json({
       messages: newMsgs,
       success: true,
