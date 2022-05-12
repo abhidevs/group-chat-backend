@@ -16,6 +16,8 @@ const Room = require("./models/Room");
 const Participant = require("./models/Participant");
 const Invite = require("./models/Invite");
 const Media = require("./models/Media");
+const ArchivedMessage = require("./models/ArchivedMessage");
+require("./utils/cronjob");
 
 const app = express();
 
@@ -31,9 +33,12 @@ app.use("/api/users", UserRoutes);
 
 User.hasMany(Message);
 Message.belongsTo(User);
+ArchivedMessage.belongsTo(User);
 Room.hasMany(Message);
 Message.belongsTo(Room);
 Message.belongsTo(Media, { as: "media", foreignKey: "mediaId" });
+ArchivedMessage.belongsTo(Room);
+ArchivedMessage.belongsTo(Media, { as: "media", foreignKey: "mediaId" });
 User.belongsToMany(Room, { through: Participant });
 Room.belongsToMany(User, { through: Participant });
 Room.hasMany(Invite);
