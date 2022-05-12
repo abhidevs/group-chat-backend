@@ -15,6 +15,7 @@ const Message = require("./models/Message");
 const Room = require("./models/Room");
 const Participant = require("./models/Participant");
 const Invite = require("./models/Invite");
+const Media = require("./models/Media");
 
 const app = express();
 
@@ -32,6 +33,7 @@ User.hasMany(Message);
 Message.belongsTo(User);
 Room.hasMany(Message);
 Message.belongsTo(Room);
+Message.belongsTo(Media, { as: "media", foreignKey: "mediaId" });
 User.belongsToMany(Room, { through: Participant });
 Room.belongsToMany(User, { through: Participant });
 Room.hasMany(Invite);
