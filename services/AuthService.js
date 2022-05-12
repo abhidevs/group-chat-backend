@@ -18,3 +18,17 @@ exports.createUser = async ({ name, email, phone, password }) => {
     throw error;
   }
 };
+
+exports.createGoogleUser = async ({ name, email }) => {
+  try {
+    const user = await User.create({
+      name,
+      email,
+    });
+    await user.save();
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};

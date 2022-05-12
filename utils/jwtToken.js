@@ -12,3 +12,7 @@ exports.verifyToken = (token) => {
     });
   });
 };
+
+exports.decodeToken = (token) => {
+  return jwt.decode(token);
+};

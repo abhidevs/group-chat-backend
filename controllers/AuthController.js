@@ -2,6 +2,7 @@ const AuthService = require("../services/AuthService");
 const UserService = require("../services/UserService");
 const jwtToken = require("../utils/jwtToken");
 const encryptPass = require("../utils/encryptPass");
+const jwt = require("jsonwebtoken");
 
 exports.signupUser = async (req, res) => {
   try {
@@ -42,6 +43,29 @@ exports.loginUser = async (req, res) => {
     } else {
       res.status(404).json({ message: "User not found!", success: false });
     }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};
+
+exports.signinwithgoogle = async (req, res) => {
+  try {
+    const decoded = jwtToken.decodeToken(req.body.credential);
+    req.body.email = decoded.email;
+    req.body.name = decoded.name;
+    let user = await UserService.checkIfUserExists(req.body);
+    
+    if (!user) {
+      user = await AuthService.createGoogleUser(req.body);
+    }
+
+    const token = jwtToken.generateAccessToken({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
+    res.json({ accessToken: token, email: user.email });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
